@@ -1,0 +1,16 @@
+services:
+  powerup-audio:
+    build:
+      context: .
+      args:
+        GO_IMAGE: ${GO_IMAGE:-docker.1ms.run/library/golang:1.26.8-alpine}
+    image: powerup-audio:local
+    container_name: powerup-audio
+    ports:
+      - "0.0.0.0:8080:8080"
+    volumes:
+      - ./audios:/app/audios:ro
+    environment:
+      AUDIO_DIR: /app/audios
+      PORT: "8080"
+    restart: unless-stopped

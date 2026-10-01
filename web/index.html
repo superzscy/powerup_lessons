@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f5f8fa" />
+    <title>Power Up 音频播放器</title>
+    <link rel="stylesheet" href="/assets/app.css" />
+    <script src="/assets/app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="Power Up 音频播放器首页">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 36 36" fill="none">
+              <path d="M7 21v-6M13 26V10M19 23V13M25 29V7M31 21v-6" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+            </svg>
+          </span>
+          <span class="brand-copy">
+            <strong>Power Up 音频播放器</strong>
+            <small>Cambridge Power Up <span>·</span> Level 1</small>
+          </span>
+        </a>
+        <div class="header-actions">
+          <label class="search-box" for="search-input">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg>
+            <input id="search-input" type="search" placeholder="搜索曲目 / Track" autocomplete="off" />
+            <kbd>Ctrl K</kbd>
+          </label>
+          <button class="icon-button refresh-button" id="refresh-button" type="button" title="刷新音频目录" aria-label="刷新音频目录">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M6.3 9A7 7 0 0 1 18 6l2 2M4 16l2 2a7 7 0 0 0 11.7-3"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <aside class="sidebar panel" aria-label="音频目录">
+          <div class="sidebar-heading">
+            <div>
+              <span class="eyebrow">LIBRARY</span>
+              <h1>音频目录</h1>
+            </div>
+            <span class="total-count" id="total-count">—</span>
+          </div>
+          <div id="library-nav" class="library-nav" aria-live="polite">
+            <div class="loading-state">正在读取音频目录…</div>
+          </div>
+          <div class="sidebar-note">
+            <span class="note-dot"></span>
+            <span>曲目按 CD 编号排列</span>
+          </div>
+        </aside>
+
+        <section class="content panel" aria-labelledby="content-title">
+          <div class="content-heading">
+            <div class="heading-copy">
+              <div class="breadcrumb" id="breadcrumb">POWER UP <span>/</span> AUDIO</div>
+              <h2 id="content-title">正在载入…</h2>
+              <p id="content-subtitle">从左侧目录选择教材与 CD</p>
+            </div>
+            <form id="jump-form" class="jump-form">
+              <label for="jump-input">曲目编号</label>
+              <input id="jump-input" name="track" type="number" min="1" placeholder="例如 12" inputmode="numeric" />
+              <button class="button button-primary jump-button" type="submit">定位</button>
+            </form>
+          </div>
+
+          <div id="notice" class="notice" role="status" hidden></div>
+          <div class="track-list-wrap">
+            <table class="track-table">
+              <thead>
+                <tr>
+                  <th class="track-col">曲目</th>
+                  <th>文件名</th>
+                  <th class="action-col"><span class="sr-only">播放</span></th>
+                </tr>
+              </thead>
+              <tbody id="track-list">
+                <tr><td colspan="3" class="empty-cell">正在读取音频文件…</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="content-footer">
+            <span id="visible-count">—</span>
+            <span>点击曲目选择，再按底部“开始”播放</span>
+          </div>
+        </section>
+      </main>
+
+      <footer class="player-bar panel" aria-label="音频播放器">
+        <div class="now-playing">
+          <div class="album-art" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none"><path d="M19.5 7v16.2a3.7 3.7 0 1 1-2-3.3V11l10-2.2v12.1a3.7 3.7 0 1 1-2-3.3V5z" fill="currentColor"/></svg>
+          </div>
+          <div class="now-playing-copy">
+            <strong id="now-title">尚未选择曲目</strong>
+            <span id="now-file">从目录中选择一首音频</span>
+          </div>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline-times"><span id="elapsed-time">00:00</span><span id="duration-time">--:--</span></div>
+          <input id="seek-bar" class="seek-bar" type="range" min="0" max="0" value="0" aria-label="播放进度" disabled />
+        </div>
+
+        <div class="player-controls">
+          <button class="button button-primary control-button" id="play-pause-button" type="button" disabled aria-label="开始" aria-pressed="false">
+            <svg class="play-state-icon play-state-icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10-6.5z" fill="currentColor"/></svg>
+            <svg class="play-state-icon play-state-icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 5h3.7v14H7.5zM15 5h3.7v14H15z" fill="currentColor"/></svg>
+            <span id="play-pause-label" class="control-label">开始</span>
+          </button>
+          <button class="button button-secondary control-button" id="replay-button" type="button" disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.8 10a7.5 7.5 0 1 1-.2 4M4 5v5h5"/><path d="M12 8v4l2.7 1.8"/></svg><span class="control-label">重播</span>
+          </button>
+          <button class="button button-secondary control-button heard-button" id="heard-button" type="button" disabled aria-label="标记为已听" aria-pressed="false" title="标记为已听">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.2 4.2L19 7"/></svg><span class="control-label">已听</span>
+          </button>
+        </div>
+      </footer>
+      <audio id="audio-element" preload="metadata"></audio>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+.git
+.codex
+.agents
+项目方案结论.md
+*.md
+!README.md
+node_modules
+dist
+tmp
+temp
