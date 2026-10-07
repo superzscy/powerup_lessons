@@ -224,6 +224,9 @@ button { color: inherit; }
 #play-pause-button.is-playing .play-state-icon-pause { display: block; }
 .heard-button.is-marked { color: #087e72; border-color: #a9dcd2; background: #e8f7f2; }
 .heard-button.is-marked:hover:not(:disabled) { color: #056a61; border-color: #83c8bb; background: #dcf3eb; }
+.speed-button { min-width: 68px; font-variant-numeric: tabular-nums; }
+.speed-button.is-slow { color: #087e72; border-color: #a9dcd2; background: #e8f7f2; }
+.speed-button.is-slow:hover:not(:disabled) { color: #056a61; border-color: #83c8bb; background: #dcf3eb; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; clip-path: inset(50%); }
 
 button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid rgba(21, 153, 160, .26); outline-offset: 2px; }
@@ -303,6 +306,8 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
   .player-controls { grid-column: 2; grid-row: 2; gap: 5px; }
   .control-button { min-width: 38px; min-height: 38px; gap: 0; padding: 0 8px; }
   .control-button .control-label { display: none; }
+  .speed-button { min-width: 54px; padding: 0 5px; font-size: 10px; }
+  .speed-button .speed-label { display: inline; }
   .heard-button { min-width: 51px; gap: 4px; padding: 0 7px; }
   .heard-button .control-label { display: inline; font-size: 10px; }
   .control-button svg { width: 17px; height: 17px; }

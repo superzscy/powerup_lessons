@@ -21,6 +21,7 @@
     playPause: $("#play-pause-button"),
     playPauseLabel: $("#play-pause-label"),
     replay: $("#replay-button"),
+    speedToggle: $("#speed-toggle"),
     heard: $("#heard-button"),
     audio: $("#audio-element"),
   };
@@ -275,6 +276,12 @@
     ui.playPause.setAttribute("aria-label", isPlaying ? "暂停" : "开始");
     ui.playPause.setAttribute("aria-pressed", String(isPlaying));
     ui.replay.disabled = !enabled;
+    const isSlowPlayback = ui.audio.playbackRate === 0.75;
+    ui.speedToggle.disabled = !enabled;
+    ui.speedToggle.classList.toggle("is-slow", isSlowPlayback);
+    ui.speedToggle.setAttribute("aria-pressed", String(isSlowPlayback));
+    ui.speedToggle.setAttribute("aria-label", isSlowPlayback ? "关闭 0.75 倍速" : "开启 0.75 倍速");
+    ui.speedToggle.title = isSlowPlayback ? "关闭 0.75 倍速" : "开启 0.75 倍速";
     ui.heard.disabled = !enabled;
     ui.heard.classList.toggle("is-marked", isHeard);
     ui.heard.setAttribute("aria-pressed", String(isHeard));
@@ -418,6 +425,10 @@
     if (!selectedTrack()) return;
     try { ui.audio.currentTime = 0; } catch (_) { /* Metadata may still be loading. */ }
     await playCurrent();
+  });
+  ui.speedToggle.addEventListener("click", () => {
+    ui.audio.playbackRate = ui.audio.playbackRate === 0.75 ? 1 : 0.75;
+    renderPlayer();
   });
   ui.seek.addEventListener("input", () => {
     ui.elapsed.textContent = formatTime(Number(ui.seek.value));
