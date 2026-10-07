@@ -6,11 +6,16 @@ services:
         GO_IMAGE: ${GO_IMAGE:-docker.1ms.run/library/golang:1.26.8-alpine}
     image: powerup-audio:local
     container_name: powerup-audio
-    ports:
-      - "0.0.0.0:8080:8080"
+    user: "${PUID:-1000}:${PGID:-1000}"
+    networks:
+      - mynet
     volumes:
       - ./audios:/app/audios:ro
     environment:
       AUDIO_DIR: /app/audios
       PORT: "8080"
     restart: unless-stopped
+
+networks:
+  mynet:
+    external: true
